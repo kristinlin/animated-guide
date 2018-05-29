@@ -3,6 +3,9 @@ CFLAGS= -g
 LDFLAGS= -lm
 CC= gcc
 
+run: all
+	./mdl simple_anim.mdl
+
 all: parser
 
 parser: lex.yy.c y.tab.c y.tab.h $(OBJECTS)
@@ -45,4 +48,4 @@ clean:
 	rm y.tab.c y.tab.h
 	rm lex.yy.c
 	rm -rf mdl.dSYM
-	rm *.o *~
+	rm *.o *~ 
