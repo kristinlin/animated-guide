@@ -71,7 +71,35 @@ void first_pass() {
   //they must be extern variables
   extern int num_frames;
   extern char name[128];
-
+  int verified_b = 0;
+  int verified_f = 0;
+  int verified_v = 0;
+  int i;
+  for (i=0;i<lastop;i++) {
+    //printf("%d: ",i);
+    switch (op[i].opcode)
+      {
+      case FRAMES:
+	verified_f = 1;
+	num_frames = op[i].op.frames.num_frames;
+	break;
+      case BASENAME:
+	verified_b = 1;
+	strcpy(name, op[i].op.basename.p->name);
+	break;
+      case VARY:
+	verified_v = 1;
+	break;
+      }//end switch
+  }//end for loop
+  if (verified_v && !verified_f) {
+    printf("ERROR: vary found but not frames.\n");
+    exit(1);
+  }
+  if (verified_f && !verified_b) {
+    strcpy(name, "mygif.gif");
+    printf("WARNING: GIF created will be given default name, mygif.gif.\n");
+  }
 }
 
 /*======== struct vary_node ** second_pass() ==========
@@ -94,6 +122,17 @@ void first_pass() {
   appropirate value.
   ====================*/
 struct vary_node ** second_pass() {
+  struct vary_node ** knobs = calloc(num_frames*sizeof(struct vary_node),
+				     num_frames);
+  int i;
+  for (i=0;i<lastop;i++) {
+    //printf("%d: ",i);
+    switch (op[i].opcode)
+      {
+      case VARY:
+	
+      }//end switch
+  }//end for loop
   return NULL;
 }
 
